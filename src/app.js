@@ -27,7 +27,7 @@ class Base {
   }
 }
 
-class Repository {
+class Repository extends Base {
   rank;
   repositoryName;
   language;
@@ -36,34 +36,32 @@ class Repository {
   cloneUrl;
 
   constructor(rank, item) {
+    super('single-repo', 'body');
+
     this.rank = rank;
     this.repositoryName = item.full_name;
     this.language = item.language;
     this.star = item.stargazers_count;
     this.pageUrl = item.html_url;
     this.cloneUrl = item.ssh_url;
+
+    this.renderContent();
+  }
+
+  renderContent() {
+    this.element.querySelectorAll('td')[0].textContent = this.rank;
+    this.element.querySelectorAll('td')[1].textContent = this.repositoryName;
+    this.element.querySelectorAll('td')[2].textContent = this.language;
+    this.element.querySelectorAll('td')[3].textContent = this.star;
+    this.element.querySelectorAll('td')[4].textContent = this.cloneUrl;
   }
 }
 
-class RepositoryRow extends Base {
-  constructor(repo) {
-    super('single-repo', 'body');
+class RepositoryList extends Base {
+  repositoryElement;
 
-    this.renderContent(repo); 
-  }
-
-  renderContent(repo) {
-    this.element.querySelectorAll('td')[0].textContent = repo.rank;
-  }
-}
-
-class RepositoryTable extends Base {
-  repositoryList;
-
-  constructor(repiList) {
+  constructor() {
     super('repo-list', 'app');
-
-    this.repositoryList = repiList;
 
     this.renderContent();
   }
@@ -76,47 +74,39 @@ class RepositoryTable extends Base {
     this.element.querySelectorAll('th')[4].textContent = "Clone";
   }
 
-  renderTable() {
-    //console.log(this.repositoryList)
-    // this.repositoryList.forEach((repo) => {
-    //   new RepositoryRow(repo);
-    // });
+  getRepositories() {
+    axios({
+      method: 'get',
+      url: 'https://api.github.com/search/repositories',
+      responseType: 'json',
+      params: {
+        q: 'stars:>1',
+        s: 'stars',
+        per_page: 10,
+        page: 1
+      },
+      headers: {
+        'Accept': 'application/vnd.github.mercy-preview+json',
+      }
+    }).then((res) => {
+      const items = res.data.items;
+      let count = 0;
+
+      const repositoryList = items.map((item) => {
+        count++;
+        return new Repository(count, item);
+      })
+    }).catch((error) => {
+      console.log('error');
+      console.log(error);
+    });
   }
 
   renderContent(){
     this.renderHeader();
-    this.renderTable();
+    this.getRepositories();
   }
 }
 
-async function getRepositories() {
-  await axios({
-    method: 'get',
-    url: 'https://api.github.com/search/repositories',
-    responseType: 'json',
-    params: {
-      q: 'stars:>1',
-      s: 'stars',
-      per_page: 10,
-      page: 1
-    },
-    headers: {
-      'Accept': 'application/vnd.github.mercy-preview+json',
-    }
-  }).then((res) => {
-    const items = res.data.items;
-    let count = 0;
-
-    const repositoryList = items.map((item) => {
-      count++;
-      return new Repository(count, item);
-    })
-  }).catch((error) => {
-    console.log('error');
-    console.log(error);
-  });
-}
-
-const repositoryList = getRepositories();
-console.log(repositoryList);
-new RepositoryTable(repositoryList);
+// new Base();
+new RepositoryList();
