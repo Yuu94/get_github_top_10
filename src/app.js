@@ -32,7 +32,7 @@ class Repository extends Base {
   repositoryName;
   language;
   star;
-  pageUrl;
+  repoUrl;
   cloneUrl;
 
   constructor(rank, item) {
@@ -42,18 +42,50 @@ class Repository extends Base {
     this.repositoryName = item.full_name;
     this.language = item.language;
     this.star = item.stargazers_count;
-    this.pageUrl = item.html_url;
+    this.repoUrl = item.html_url;
     this.cloneUrl = item.ssh_url;
 
     this.renderContent();
+    this.configure();
   }
 
   renderContent() {
+    let aElement = document.createElement('a');
+    aElement.textContent = this.repositoryName;
+    aElement.href = this.repoUrl;
+
+    let btnElement = document.createElement('button');
+    btnElement.textContent = 'Clone SSH';
+
     this.element.querySelectorAll('td')[0].textContent = this.rank;
-    this.element.querySelectorAll('td')[1].textContent = this.repositoryName;
+    this.element.querySelectorAll('td')[1].insertAdjacentElement(
+      "afterbegin",
+      aElement
+    );
     this.element.querySelectorAll('td')[2].textContent = this.language;
     this.element.querySelectorAll('td')[3].textContent = this.star;
-    this.element.querySelectorAll('td')[4].textContent = this.cloneUrl;
+    this.element.querySelectorAll('td')[4].insertAdjacentElement(
+      "afterbegin",
+      btnElement
+    );
+  }
+
+  clickHandler() {
+    var clone_url = document.createElement("textarea");
+    clone_url.value = this.cloneUrl;
+    document.body.appendChild(clone_url);
+    clone_url.select();
+    document.execCommand("copy");
+    clone_url.parentElement.removeChild(clone_url);
+
+    alert('Coppied');
+  }
+
+  configure() {
+    this.element.querySelector('button').addEventListener(
+      'click',
+      this.clickHandler.bind(this)
+    );
   }
 }
 
@@ -89,12 +121,12 @@ class RepositoryList extends Base {
         'Accept': 'application/vnd.github.mercy-preview+json',
       }
     }).then((res) => {
-      const items = res.data.items;
-      let count = 0;
+      const items = res.data.items.reverse();
+      let count = items.length;
 
-      const repositoryList = items.map((item) => {
-        count++;
-        return new Repository(count, item);
+      items.forEach((item) => {
+        new Repository(count, item);
+        count--;
       })
     }).catch((error) => {
       console.log('error');
@@ -108,5 +140,4 @@ class RepositoryList extends Base {
   }
 }
 
-// new Base();
 new RepositoryList();
