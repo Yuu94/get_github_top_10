@@ -1,7 +1,7 @@
 class Base {
-  templateElement;
-  hostElement;
-  element;
+  // templateElement;
+  // hostElement;
+  // element;
 
   constructor(
     templateId,
@@ -27,12 +27,12 @@ class Base {
 }
 
 class Repository extends Base {
-  rank;
-  repositoryName;
-  language;
-  star;
-  repoUrl;
-  cloneUrl;
+  // rank;
+  // repositoryName;
+  // language;
+  // star;
+  // repoUrl;
+  // cloneUrl;
 
   constructor(rank, item) {
     super('single-repo', 'body');
@@ -89,7 +89,7 @@ class Repository extends Base {
 }
 
 class RepositoryList extends Base {
-  repositoryElement;
+  // repositoryElement;
 
   constructor() {
     super('repo-list', 'app');
