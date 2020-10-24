@@ -1,4 +1,3 @@
-// ベースクラス
 class Base {
   templateElement;
   hostElement;
@@ -21,7 +20,7 @@ class Base {
 
   attach() {
     this.hostElement.insertAdjacentElement(
-      "afterbegin",
+      "beforeend",
       this.element
     )
   }
@@ -121,12 +120,12 @@ class RepositoryList extends Base {
         'Accept': 'application/vnd.github.mercy-preview+json',
       }
     }).then((res) => {
-      const items = res.data.items.reverse();
-      let count = items.length;
+      const items = res.data.items;
+      let count = 0;
 
       items.forEach((item) => {
+        count++;
         new Repository(count, item);
-        count--;
       })
     }).catch((error) => {
       console.log('error');
