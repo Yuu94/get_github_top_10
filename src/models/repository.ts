@@ -1,12 +1,13 @@
+// TODO: any型解消
 export class Repository {
-  // rank;
-  // repositoryName;
-  // language;
-  // star;
-  // repoUrl;
-  // cloneUrl;
+  rank: number;
+  name: string;
+  language: string;
+  star: number;
+  url: string;
+  cloneUrl: string;
 
-  constructor(rank, item) {
+  constructor(rank: number, item: any) {
     this.rank = rank;
     this.name = item.full_name;
     this.language = item.language ? item.language : '--';

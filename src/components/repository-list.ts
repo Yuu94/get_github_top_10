@@ -1,9 +1,8 @@
-import { Base } from './base.js'
-import { RepositoryContent } from './repository-content.js';
+// TODO: any型解消
+import { Base } from './base'
+import { RepositoryContent } from './repository-content';
 
-export class RepositoryList extends Base {
-  // repositoryElement;
-
+export class RepositoryList extends Base<HTMLDivElement, HTMLTableElement> {
   constructor() {
     super('repo-list', 'app');
 
@@ -19,6 +18,7 @@ export class RepositoryList extends Base {
   }
 
   getRepositories() {
+    const axios = require('axios');
     axios({
       method: 'get',
       url: 'https://api.github.com/search/repositories',
@@ -32,15 +32,15 @@ export class RepositoryList extends Base {
       headers: {
         'Accept': 'application/vnd.github.mercy-preview+json',
       }
-    }).then((res) => {
+    }).then((res: any) => {
       const items = res.data.items;
       let count = 0;
 
-      items.forEach((item) => {
+      items.forEach((item: any) => {
         count++;
         new RepositoryContent(count, item);
       })
-    }).catch((error) => {
+    }).catch((error: any) => {
       console.log('error');
       console.log(error);
     });
