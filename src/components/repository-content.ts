@@ -15,20 +15,21 @@ export class RepositoryContent extends Base< HTMLTableSectionElement, HTMLTableR
   }
 
   renderContent() {
+    const { name, url, rank, language, star} = this.repo;
     let aElement = document.createElement('a');
-    aElement.textContent = this.repo.name;
-    aElement.href = this.repo.url;
+    aElement.textContent = name;
+    aElement.href = url;
 
     let btnElement = document.createElement('button');
     btnElement.textContent = 'Clone SSH';
 
-    this.element.querySelectorAll('td')[0].textContent = String(this.repo.rank);
+    this.element.querySelectorAll('td')[0].textContent = String(rank);
     this.element.querySelectorAll('td')[1].insertAdjacentElement(
       "afterbegin",
       aElement
     );
-    this.element.querySelectorAll('td')[2].textContent = this.repo.language;
-    this.element.querySelectorAll('td')[3].textContent = String(this.repo.star);
+    this.element.querySelectorAll('td')[2].textContent = language;
+    this.element.querySelectorAll('td')[3].textContent = String(star);
     this.element.querySelectorAll('td')[4].insertAdjacentElement(
       "afterbegin",
       btnElement
@@ -36,8 +37,9 @@ export class RepositoryContent extends Base< HTMLTableSectionElement, HTMLTableR
   }
 
   clickHandler() {
+    const { cloneUrl } = this.repo;
     var clone_url = document.createElement("textarea");
-    clone_url.value = this.repo.cloneUrl;
+    clone_url.value = cloneUrl;
     document.body.appendChild(clone_url);
     clone_url.select();
     document.execCommand("copy");
