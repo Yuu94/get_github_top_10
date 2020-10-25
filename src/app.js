@@ -22,7 +22,7 @@ class Base {
     this.hostElement.insertAdjacentElement(
       "beforeend",
       this.element
-    )
+    );
   }
 }
 
