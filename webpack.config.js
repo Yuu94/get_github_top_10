@@ -8,7 +8,17 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     publicPath: 'dist'
   },
+  devtool: 'inline-source-map',
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
+      }
+    ]
+  },
   resolve: {
-    extensions: ['.js']
+    extensions: ['.ts','.js']
   }
 };
