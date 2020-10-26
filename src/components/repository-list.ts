@@ -1,6 +1,10 @@
-// TODO: any型解消
 import { Base } from './base'
 import { RepositoryContent } from './repository-content';
+import { 
+  GithubRepositoryResponse,
+  ErrorMessage
+} from '../models/github-repo-response';
+
 
 export class RepositoryList extends Base<HTMLDivElement, HTMLTableElement> {
   constructor() {
@@ -32,7 +36,7 @@ export class RepositoryList extends Base<HTMLDivElement, HTMLTableElement> {
       headers: {
         'Accept': 'application/vnd.github.mercy-preview+json',
       }
-    }).then((res: any) => {
+    }).then((res: GithubRepositoryResponse) => {
       const items = res.data.items;
       let count = 0;
 
@@ -40,9 +44,9 @@ export class RepositoryList extends Base<HTMLDivElement, HTMLTableElement> {
         count++;
         new RepositoryContent(count, item);
       })
-    }).catch((error: any) => {
+    }).catch((error: ErrorMessage) => {
       console.log('error');
-      console.log(error);
+      console.log(error.message);
     });
   }
 

@@ -1,4 +1,5 @@
-// TODO: any型解消
+import { GithubRepositoryItem } from './github-repo-response';
+
 export class Repository {
   rank: number;
   name: string;
@@ -7,7 +8,7 @@ export class Repository {
   url: string;
   cloneUrl: string;
 
-  constructor(rank: number, item: any) {
+  constructor(rank: number, item: GithubRepositoryItem) {
     this.rank = rank;
     this.name = item.full_name;
     this.language = item.language ? item.language : '--';

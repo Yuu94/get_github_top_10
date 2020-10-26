@@ -1,11 +1,11 @@
-// TODO: any型解消
-import { Base } from './base'
-import { Repository } from '../models/repository'
+import { Base } from './base';
+import { Repository } from '../models/repository';
+import { GithubRepositoryItem } from '../models/github-repo-response';
 
 export class RepositoryContent extends Base< HTMLTableSectionElement, HTMLTableRowElement> {
   repo: Repository;
 
-  constructor(rank: number, item: any) {
+  constructor(rank: number, item: GithubRepositoryItem) {
     super('single-repo', 'body');
 
     this.repo = new Repository(rank, item);
