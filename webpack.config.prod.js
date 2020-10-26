@@ -8,8 +8,18 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
+  devtool: false,
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
+      }
+    ]
+  },
   resolve: {
-    extensions: ['.js']
+    extensions: ['.ts','.js']
   },
   plugins: [
     new CleanPlugin.CleanWebpackPlugin(),

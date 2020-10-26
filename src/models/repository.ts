@@ -1,12 +1,14 @@
-export class Repository {
-  // rank;
-  // repositoryName;
-  // language;
-  // star;
-  // repoUrl;
-  // cloneUrl;
+import { GithubRepositoryItem } from './github-repo-response';
 
-  constructor(rank, item) {
+export class Repository {
+  rank: number;
+  name: string;
+  language: string;
+  star: number;
+  url: string;
+  cloneUrl: string;
+
+  constructor(rank: number, item: GithubRepositoryItem) {
     this.rank = rank;
     this.name = item.full_name;
     this.language = item.language ? item.language : '--';
